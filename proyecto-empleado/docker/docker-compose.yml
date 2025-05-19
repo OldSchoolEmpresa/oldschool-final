@@ -1,0 +1,23 @@
+services:
+  empleado-db:
+    build:
+      context: ./docker  # Cambio clave: apunta al directorio dockerdocker logs empleado-db
+      dockerfile: Dockerfile
+    container_name: empleado-db
+    ports:
+      - "3308:3306"  # Puerto externo 3308 mapeado al 3306 interno
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: empleado
+      MYSQL_USER: empleado_user
+      MYSQL_PASSWORD: 123456
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+volumes:
+  mysql_data:

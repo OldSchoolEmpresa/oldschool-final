@@ -1,0 +1,16 @@
+FROM mysql:8.0
+
+# Configuración de MySQL
+ENV MYSQL_ROOT_PASSWORD=123456
+ENV MYSQL_DATABASE=empleado
+ENV MYSQL_USER=empleado_user
+ENV MYSQL_PASSWORD=123456
+
+# Copia el archivo SQL al directorio de inicialización
+COPY empleado.sql /docker-entrypoint-initdb.d/
+
+# Configura permisos adecuados
+RUN chmod 644 /docker-entrypoint-initdb.d/empleado.sql
+
+# Configuración adicional para MySQL
+CMD ["mysqld", "--character-set-server=utf8mb4", "--collation-server=utf8mb4_unicode_ci"]
